@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   # roles: member (default) and librarian
-  enum role: { member: 0, librarian: 1 }
+  enum :role, { member: 0, librarian: 1 }
 
   # Devise modules
   devise :database_authenticatable,
