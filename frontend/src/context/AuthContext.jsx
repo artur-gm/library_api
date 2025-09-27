@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      api.get('/current_user')
+      api.get('/api/v1/current_user')
         .then(res => setUser(res.data))
         .catch(() => setUser(null));
     }
