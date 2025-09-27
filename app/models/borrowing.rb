@@ -11,6 +11,7 @@ class Borrowing < ApplicationRecord
   after_update :increment_book_if_returned, if: -> { saved_change_to_returned_at? && returned_at.present? }
 
   scope :overdue, -> { where("due_at < ? AND returned_at IS NULL", Time.current) }
+  scope :active, -> { where(returned_at: nil) }
 
   def returned?
     returned_at.present?

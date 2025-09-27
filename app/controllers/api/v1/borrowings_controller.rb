@@ -6,7 +6,7 @@ module Api
       load_and_authorize_resource only: %i[index create show]
 
       def index
-        @borrowings = current_user.librarian? ? Borrowing.all : current_user.borrowings
+        @borrowings = current_user.librarian? ? Borrowing.all : current_user.borrowings.active
         render json: @borrowings
       end
 

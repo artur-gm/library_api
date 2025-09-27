@@ -21,7 +21,7 @@ class Ability
 
     # Borrowing management
     can :manage, Borrowing
-    can :return_book, Borrowing
+    can :return, Borrowing
 
     # Dashboard access
     can :librarian_dashboard, User
@@ -39,7 +39,7 @@ class Ability
     # Borrowing management (only their own)
     can :create, Borrowing
     can :read, Borrowing, user_id: user.id
-    can :return_book, Borrowing, user_id: user.id
+    can :return, Borrowing, user_id: user.id
 
     # Dashboard access
     can :member_dashboard, User, id: user.id
