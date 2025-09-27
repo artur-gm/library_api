@@ -8,7 +8,7 @@ export default function MemberDashboard() {
   useEffect(() => {
     async function fetchBorrowed() {
       try {
-        const res = await api.get('/api/v1/borrowings'); // returns borrowings for current member
+        const res = await api.get('/api/v1/dashboard'); // returns borrowings for current member
         setBorrowedBooks(res.data.borrowed || []);
         setOverdueBooks(res.data.overdue || []);
       } catch (err) {
@@ -35,3 +35,9 @@ export default function MemberDashboard() {
         {overdueBooks.length ? overdueBooks.map(b => (
           <li key={b.id}>
             {b.book.title} — Due: {new Date(b.due_at).toLocaleDateString()}
+          </li>
+        )) : <li>No overdue books 🎉</li>}
+      </ul>
+    </div>
+  );
+}
