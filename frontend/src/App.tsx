@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Login from './pages/Login.jsx';
+import SignUp from './pages/SignUp.jsx';
 import Books from './pages/Books.jsx';
 import CreateBook from './pages/CreateBook.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -13,6 +14,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
         <Route path="/books" element={<Books />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route
