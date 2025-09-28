@@ -57,11 +57,11 @@ const CreateBook = () => {
   };
 
   return (
-    <div className="create-book-container">
+    <div className="book-form-container">
       <h2>Create New Book</h2>
       {error && <p className="error">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="create-book-form">
+      <form onSubmit={handleSubmit} className="book-form">
         <div className="form-group">
         <input
           type="text"

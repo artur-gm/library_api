@@ -5,6 +5,7 @@ import Books from './pages/Books.jsx';
 import CreateBook from './pages/CreateBook.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import EditBook from './pages/EditBook.jsx';
 
 export default function App() {
   return (
@@ -19,6 +20,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['librarian']}>
               <CreateBook />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/books/:id/edit/"
+          element={
+            <ProtectedRoute allowedRoles={['librarian']}>
+              <EditBook />
             </ProtectedRoute>
           }
         />

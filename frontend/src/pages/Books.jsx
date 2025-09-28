@@ -1,11 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function Books() {
   const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
-  const [borrowings, setBorrowings] = useState([]); // single source of truth
+  const [borrowings, setBorrowings] = useState([]);
+  const navigate = useNavigate();
 
   const fetchBooks = async () => {
     try {
@@ -52,6 +54,10 @@ export default function Books() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleEdit = (book) => {
+      navigate(`/books/${book.id}/edit`);
   };
 
   return (

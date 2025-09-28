@@ -257,7 +257,7 @@ form button[type="submit"] {
   margin-right: 1rem;
 }
 
-.create-book-container {
+.book-form-container {
   max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
@@ -267,25 +267,25 @@ form button[type="submit"] {
   color: #eceff4; /* nord6 */
 }
 
-.create-book-container h2 {
+.book-form-container h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #88c0d0; /* nord8 */
 }
 
-.create-book-form .form-group {
+.book-form .form-group {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-.create-book-form label {
+.book-form label {
   margin-bottom: 0.5rem;
   font-weight: bold;
   color: #d8dee9; /* nord4 */
 }
 
-.create-book-form input {
+.book-form input {
   padding: 0.5rem;
   border: 1px solid #4c566a; /* nord3 */
   border-radius: 6px;
@@ -293,12 +293,12 @@ form button[type="submit"] {
   color: #eceff4; /* nord6 */
 }
 
-.create-book-form input:focus {
+.book-form input:focus {
   outline: none;
   border-color: #88c0d0; /* nord8 */
 }
 
-.create-book-form button {
+.book-form button {
   width: 100%;
   padding: 0.75rem;
   background-color: #88c0d0; /* nord8 */
@@ -310,7 +310,7 @@ form button[type="submit"] {
   transition: background-color 0.2s ease-in-out;
 }
 
-.create-book-form button:hover {
+.book-form button:hover {
   background-color: #81a1c1; /* nord9 */
 }
 
