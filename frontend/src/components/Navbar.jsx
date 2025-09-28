@@ -12,22 +12,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
-      <Link to="/books" style={{ marginRight: '1rem' }}>Books</Link>
-
-      {user?.role === 'librarian' && (
-        <Link to="/dashboard/librarian" style={{ marginRight: '1rem' }}>Dashboard</Link>
-      )}
-
-      {user?.role === 'member' && (
-        <Link to="/dashboard/member" style={{ marginRight: '1rem' }}>Dashboard</Link>
-      )}
-
-      {user ? (
-        <button onClick={handleLogout}>Logout</button>
-      ) : (
-        <Link to="/">Login</Link>
-      )}
-    </nav>
+  <nav className="navbar">
+  <a href="/" className="brand">Library</a>
+  <div className="nav-links">
+    <a href="/books">Books</a>
+    <a href="/dashboard">Dashboard</a>
+    {user && <button className="logout-btn" onClick={handleLogout}>Logout</button>}
+  </div>
+</nav>
   );
 }
