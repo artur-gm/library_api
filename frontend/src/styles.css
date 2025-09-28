@@ -178,6 +178,11 @@ form button[type="submit"] {
   color: #ECEFF4;
 }
 
+
+.badge.returned {
+  background-color: #A3BE8C; /* green */
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;

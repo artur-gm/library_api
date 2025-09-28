@@ -1,32 +1,60 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import BorrowingRow from '../components/BorrowingRow.jsx';
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [stats, setStats] = useState({});
-  const [records, setRecords] = useState([]); // borrowed books or overdue members
+  const [borrowed, setBorrowed] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchDashboard = async () => {
     try {
       const res = await api.get('/api/v1/dashboard');
+
       if (user?.role === 'librarian') {
         setStats(res.data);
-        setRecords(res.data.overdue_members || []);
+
+        const borrowingsRes = await api.get('/api/v1/borrowings');
+        setBorrowed(borrowingsRes.data);
       } else {
-        setStats({ total_borrowed: res.data.borrowed.length, overdue: res.data.overdue.length });
-        setRecords(res.data.borrowed || []);
+        setStats({
+          total_borrowed: res.data.borrowed.length,
+          overdue: res.data.overdue.length,
+        });
+        setBorrowed(res.data.borrowed || []);
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDashboard();
-  }, [user]);
+    if (token) fetchDashboard();
+  }, [user, token]);
 
-  const isOverdue = (record) => user.role === 'member' && new Date(record.due_at) < new Date() && !record.returned_at;
+  const handleReturned = (id) => {
+    setBorrowed((prev) =>
+      prev.map((b) =>
+        b.id === id ? { ...b, returned_at: new Date().toISOString() } : b
+      )
+    );
+  };
+
+  const getStatus = (record) => {
+    if (record.returned_at) {
+      return { label: 'Returned', className: 'badge returned' };
+    }
+    if (new Date(record.due_at) < new Date()) {
+      return { label: 'Overdue', className: 'badge overdue' };
+    }
+    return { label: 'Due', className: 'badge due' };
+  };
+
+  if (loading) return <p>Loading dashboard…</p>;
 
   return (
     <div className="page-container">
@@ -62,7 +90,9 @@ export default function Dashboard() {
         )}
       </div>
 
-      <h2>{user?.role === 'librarian' ? 'Members with Overdue Books' : 'My Borrowed Books'}</h2>
+      <h2>
+        {user?.role === 'librarian' ? 'All Borrowed Books' : 'My Borrowed Books'}
+      </h2>
       <table className="dashboard-table">
         <thead>
           <tr>
@@ -70,7 +100,10 @@ export default function Dashboard() {
               <>
                 <th>Member</th>
                 <th>Book</th>
+                <th>Borrowed At</th>
                 <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
               </>
             ) : (
               <>
@@ -83,26 +116,29 @@ export default function Dashboard() {
           </tr>
         </thead>
         <tbody>
-          {records.map((r) =>
-            user.role === 'librarian' ? (
-              <tr key={r.id}>
-                <td>{r.member_name}</td>
-                <td>{r.book_title}</td>
-                <td>{new Date(r.due_at).toLocaleDateString()}</td>
-              </tr>
-            ) : (
-              <tr key={r.id} className={isOverdue(r) ? 'overdue' : ''}>
-                <td>{r.book?.title}</td>
-                <td>{new Date(r.borrowed_at).toLocaleDateString()}</td>
-                <td>{new Date(r.due_at).toLocaleDateString()}</td>
-                <td>
-                  <span className={`badge ${isOverdue(r) ? 'overdue' : 'due'}`}>
-                    {isOverdue(r) ? 'Overdue' : 'Due'}
-                  </span>
-                </td>
-              </tr>
-            )
-          )}
+          {borrowed.map((b) => {
+            if (user?.role === 'librarian') {
+              return (
+                <BorrowingRow
+                  key={b.id}
+                  borrowing={b}
+                  onReturned={handleReturned}
+                />
+              );
+            } else {
+              const status = getStatus(b);
+              return (
+                <tr key={b.id} className={status.label.toLowerCase()}>
+                  <td>{b.book?.title || b.title}</td>
+                  <td>{new Date(b.borrowed_at).toLocaleDateString()}</td>
+                  <td>{new Date(b.due_at).toLocaleDateString()}</td>
+                  <td>
+                    <span className={status.className}>{status.label}</span>
+                  </td>
+                </tr>
+              );
+            }
+          })}
         </tbody>
       </table>
     </div>

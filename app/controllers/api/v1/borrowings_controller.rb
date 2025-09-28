@@ -6,8 +6,18 @@ module Api
       load_and_authorize_resource only: %i[index create show]
 
       def index
-        @borrowings = current_user.librarian? ? Borrowing.all : current_user.borrowings.active
-        render json: @borrowings
+        borrowings = if current_user.librarian?
+          Borrowing.includes(:book, :user).all
+        else
+          current_user.borrowings.includes(:book)
+        end
+
+        render json: borrowings.as_json(
+          include: {
+            book: { only: [ :id, :title, :author, :genre, :isbn ] },
+            user: { only: [ :id, :name, :email ] }
+          }
+        )
       end
 
       def create
