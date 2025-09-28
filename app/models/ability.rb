@@ -19,6 +19,8 @@ class Ability
     # Book management
     can :manage, Book
 
+    can :create, User, role: "librarian"
+
     # Borrowing management
     can :manage, Borrowing
     can :return, Borrowing

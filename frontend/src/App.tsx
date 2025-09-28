@@ -7,6 +7,7 @@ import CreateBook from './pages/CreateBook.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import EditBook from './pages/EditBook.jsx';
+import CreateLibrarian from './pages/CreateLibrarian.jsx';
 
 export default function App() {
   return (
@@ -30,6 +31,14 @@ export default function App() {
           element={
             <ProtectedRoute allowedRoles={['librarian']}>
               <EditBook />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/librarians/new"
+          element={
+            <ProtectedRoute allowedRoles={['librarian']}>
+              <CreateLibrarian />
             </ProtectedRoute>
           }
         />

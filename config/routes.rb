@@ -5,7 +5,9 @@ Rails.application.routes.draw do
                sessions: "users/sessions",
                registrations: "users/registrations"
              }
-
+  namespace :admin do
+    post :librarians, to: "librarians#create"
+  end
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get "/current_user", to: "users#current"
