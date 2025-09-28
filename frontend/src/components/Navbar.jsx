@@ -1,9 +1,9 @@
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext.jsx';
+import { AuthContext } from '../context/AuthContext';
 
-export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+const Navbar = () => {
+  const { user, logout, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,13 +12,39 @@ export default function Navbar() {
   };
 
   return (
-  <nav className="navbar">
-  <a href="/" className="brand">Library</a>
-  <div className="nav-links">
-    <a href="/books">Books</a>
-    <a href="/dashboard">Dashboard</a>
-    {user && <button className="logout-btn" onClick={handleLogout}>Logout</button>}
-  </div>
-</nav>
+    <nav className="navbar">
+      <div className="navbar-left">
+        <Link to="/" className="nav-logo">
+        </Link>
+        {!loading && user && (
+          <>
+            <Link to="/books">Books</Link>
+            <Link to="/dashboard">Dashboard</Link>
+            {user.role === 'librarian' && (
+              <Link to="/books/new">Add Book</Link>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="navbar-right">
+        {loading ? (
+          <span>Loading…</span>
+        ) : user ? (
+          <>
+            <span className="nav-user">Hi, {user.name}</span>
+            <button onClick={handleLogout} className="nav-button">
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/" className="nav-button">
+            Login
+          </Link>
+        )}
+      </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;
