@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/client';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 
 export default function EditBook() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { showError } = useContext(ErrorContext);
   const [book, setBook] = useState({
     title: '',
     author: '',
@@ -20,7 +23,7 @@ export default function EditBook() {
         const res = await api.get(`/api/v1/books/${id}`);
         setBook(res.data);
       } catch (err) {
-        console.error(err);
+        handleApiError(err, showError)
       } finally {
         setLoading(false);
       }
@@ -38,7 +41,7 @@ export default function EditBook() {
       await api.put(`/api/v1/books/${id}`, { book });
       navigate('/books');
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       alert('Could not update book');
     }
   };

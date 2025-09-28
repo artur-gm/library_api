@@ -2,12 +2,15 @@ import { useEffect, useState, useContext } from 'react';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
 import BorrowingRow from '../components/BorrowingRow.jsx';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 
 export default function Dashboard() {
   const { user, token } = useContext(AuthContext);
   const [stats, setStats] = useState({});
   const [borrowed, setBorrowed] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showError } = useContext(ErrorContext);
 
   const fetchDashboard = async () => {
     try {
@@ -26,7 +29,7 @@ export default function Dashboard() {
         setBorrowed(res.data.borrowed || []);
       }
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
     } finally {
       setLoading(false);
     }

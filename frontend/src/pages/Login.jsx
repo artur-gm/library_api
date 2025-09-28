@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +11,7 @@ export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const { showError } = useContext(ErrorContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +24,7 @@ export default function Login() {
       login(userData, token);
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       setError('Login failed. Check your credentials.');
     }
   };

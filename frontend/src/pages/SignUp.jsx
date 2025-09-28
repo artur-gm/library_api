@@ -2,10 +2,13 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 
 export default function Register() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const { showError } = useContext(ErrorContext);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -31,7 +34,7 @@ export default function Register() {
       alert('Registration successful! Please log in.');
       navigate('/');
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       alert('Registration failed');
     } finally {
       setLoading(false);

@@ -6,7 +6,7 @@ export default function BorrowingRow({ borrowing, onReturned }) {
       await api.post(`/api/v1/borrowings/${borrowing.id}/return`);
       onReturned(borrowing.id);
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       alert('Could not return book');
     }
   };

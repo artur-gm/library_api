@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 
 export default function AddLibrarian() {
   const { user } = useContext(AuthContext);
@@ -11,6 +13,7 @@ export default function AddLibrarian() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { showError } = useContext(ErrorContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +34,7 @@ export default function AddLibrarian() {
       alert('Librarian created successfully!');
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       alert('Failed to create librarian');
     } finally {
       setLoading(false);

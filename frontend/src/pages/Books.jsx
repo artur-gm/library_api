@@ -1,9 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../api/client';
 import { AuthContext } from '../context/AuthContext.jsx';
+import { ErrorContext } from '../context/ErrorContext.jsx';
+import { handleApiError } from '../utils/errorHandler.js';
 import { useNavigate } from 'react-router-dom';
 
 export default function Books() {
+  const { showError } = useContext(ErrorContext);
   const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
   const [borrowings, setBorrowings] = useState([]);
@@ -27,7 +30,7 @@ export default function Books() {
         setBorrowings(borrowingsRes.data.borrowed || []);
       }
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError);
     }
   };
 
@@ -50,7 +53,7 @@ export default function Books() {
       await api.post(`/api/v1/borrowings`, { book_id: bookId });
       fetchBooks();
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
     }
   };
 
@@ -59,7 +62,7 @@ export default function Books() {
       await api.post(`/api/v1/borrowings/${borrowingId}/return`);
       fetchBooks();
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
     }
   };
 
@@ -73,7 +76,7 @@ export default function Books() {
       await api.delete(`/api/v1/books/${id}`);
       setBooks((prev) => prev.filter((book) => book.id !== id));
     } catch (err) {
-      console.error(err);
+      handleApiError(err, showError)
       alert('Failed to delete book');
     }
   };
