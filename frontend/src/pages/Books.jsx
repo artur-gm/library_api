@@ -80,7 +80,7 @@ export default function Books() {
         {books.map((book) => (
           <li key={book.id} className={user?.role === 'member' && isOverdue(book) ? 'overdue' : ''}>
             <div>
-              <strong>{book.title}</strong> — {book.author} ({book.genre}) [Copies: {book.total_copies}]
+              <strong>{book.title}</strong> — {book.author} ({book.genre}) [Copies: {book.available_copies}/{book.total_copies}]
               {user?.role === 'member' && hasBorrowed(book) && isOverdue(book) && (
                 <span className="badge overdue" style={{ marginLeft: '0.5rem' }}>
                   Overdue
@@ -88,7 +88,7 @@ export default function Books() {
               )}
             </div>
             <div>
-              {user?.role === 'member' && !hasBorrowed(book) && (
+              {user?.role === 'member' && !hasBorrowed(book) && book.available_copies>0 && (
                 <button className="borrow" onClick={() => handleBorrow(book.id)}>Borrow</button>
               )}
               {user?.role === 'member' && hasBorrowed(book) && (
