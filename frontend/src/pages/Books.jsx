@@ -60,6 +60,18 @@ export default function Books() {
       navigate(`/books/${book.id}/edit`);
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this book?')) return;
+    try {
+      await api.delete(`/api/v1/books/${id}`);
+      // remove from local state instead of refetching
+      setBooks((prev) => prev.filter((book) => book.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete book');
+    }
+  };
+
   return (
     <div className="page-container">
       <h1>Books</h1>
