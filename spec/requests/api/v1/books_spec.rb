@@ -26,6 +26,17 @@ RSpec.describe 'Books API', type: :request do
       expect(JSON.parse(response.body)['title']).to eq('New Book')
     end
 
+    it 'allows librarian to update' do
+      put "/api/v1/books/#{book.id}", params: { book: { title: 'Updated Title' } }, headers: auth_headers(librarian)
+      expect(response).to have_http_status(:ok)
+      expect(JSON.parse(response.body)['title']).to eq('Updated Title')
+    end
+
+    it 'allows librarian to delete' do
+      delete "/api/v1/books/#{book.id}", headers: auth_headers(librarian)
+      expect(response).to have_http_status(:no_content)
+    end
+
     it 'prevents member from creating' do
       post '/api/v1/books', params: params, headers: auth_headers(member)
       expect(response).to have_http_status(:forbidden)

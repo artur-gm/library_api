@@ -21,7 +21,7 @@ module Api
         if @book.save
           render json: @book, status: :created
         else
-          render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @book.errors.full_messages }, status: :unprocessable_content
         end
       end
 
@@ -29,7 +29,7 @@ module Api
         if @book.update(book_params)
           render json: @book
         else
-          render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @book.errors.full_messages }, status: :unprocessable_content
         end
       end
 

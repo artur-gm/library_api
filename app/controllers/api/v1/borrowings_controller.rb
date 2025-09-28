@@ -25,7 +25,7 @@ module Api
         if @borrowing.save
           render json: @borrowing, status: :created
         else
-          render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_content
         end
       end
 
@@ -36,7 +36,7 @@ module Api
       def return
         authorize! :return, @borrowing
         if @borrowing.returned?
-          render json: { message: "Already returned" }, status: :unprocessable_entity
+          render json: { message: "Already returned" }, status: :unprocessable_content
         else
           @borrowing.update(returned_at: Time.current)
           render json: @borrowing

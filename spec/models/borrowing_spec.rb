@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Borrowing, type: :model do
-  it { is_expected.to belong_to(:user) }
-  it { is_expected.to belong_to(:book) }
+  it { should belong_to(:user) }
+  it { should belong_to(:book) }
+  it { should validate_presence_of(:user_id) }
+  it { should validate_presence_of(:book_id) }
 
   context 'when creating borrowing' do
     let(:book) { create(:book, total_copies: 1, available_copies: 1) }

@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       render json: { user: resource }, status: :created
     else
-      render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: resource.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -20,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       render json: { message: "Signed up successfully", user: resource.as_json(only: %i[id email name role]) }, status: :created
     else
-      render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: resource.errors.full_messages }, status: :unprocessable_content
     end
   end
 end

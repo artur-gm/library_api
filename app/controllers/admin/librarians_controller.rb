@@ -8,7 +8,7 @@ class Admin::LibrariansController < ApplicationController
     if @librarian.save
       render json: @librarian, status: :created
     else
-      render json: { errors: @librarian.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @librarian.errors.full_messages }, status: :unprocessable_content
     end
   end
 
