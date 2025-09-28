@@ -18,8 +18,7 @@ export default function Login() {
 
       login(userData, token);
 
-      if (userData.role === 'librarian') navigate('/dashboard/librarian');
-      else navigate('/dashboard/member');
+      navigate('/dashboard');
     } catch (err) {
       console.error(err);
       alert('Login failed');
