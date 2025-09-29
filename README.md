@@ -50,7 +50,6 @@ default: &default
 Create and migrate the database:
 
 ```bash
-cd backend
 bundle install
 rails db:create
 rails db:migrate
